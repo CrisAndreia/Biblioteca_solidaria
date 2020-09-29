@@ -1,0 +1,27 @@
+Biblioteca Solidária
+
+Essas instruções fornecerão o passo a passo para ter o projeto instalado e funcionando em sua máquina local para fins de teste.
+
+
+1) Pré-requisitos:
+    Node - Ambiente de execução JavaScript
+    Yarn - Gerenciador de pacotes Instalando
+
+    sudo apt install yarn nodejs
+
+2) Inicie o projeto
+Um passo a passo para você ter um ambiente de desenvolvimento rodando
+
+- Navegue até a pasta do projeto 
+- Instale as dependências e inicialize o projeto:
+
+yarn
+yarn start
+
+
+3) Abra a URL no browser:
+
+http://localhost:3000
+
+
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <title>Biblioteca Solidária</title>
+    <link href="style1.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+</head>
+
+<body>
+    <header>
+        <h3>Adicione um livro</h3>
+    </header>
+    <section>
+        <form id="newBook">
+            <div class=" form-group ">
+                <input type="text " name="username" class=" form-control " placeholder="E-mail de contato "><br>
+                <input type="text " name="message" class="form-control " placeholder="Nome do Livro "><br>
+                <input type="text " name="autor" class="form-control " placeholder="Nome do Autor "><br>
+                <select name="gender" class="form-control">
+                    <option selected>Selecione um genero</option>
+                    <option value=" " disable selected hidden>Selecione um genero</option>
+                    <option value="Literatura">Literatura</option>
+                    <option value="Técnico">Técnico</option>
+                    <option value="Autoajuda">Autoajuda</option>
+                </select>
+            </div>
+            <button type="submit " class="btn btn-primary ">Adicionar</button><br>
+        </form>
+
+        <br>
+        <div class="messages">
+            <h4>Livros Disponíveis para Emprestimo:</h4>
+        </div>
+        <script type="text/javascript ">
+            var socket = io('http://localhost:3000');
+
+            function renderMessage(message) {
+                $('.messages').append('<div class="message"><br><h6><strong>' + message.message + '</strong>:</h6>' + 'Autor: ' + message.author + '<br>Genero: ' +
+                    message.gender + '<br>Contato: ' + message.user + '</div><br>');
+            }
+
+            socket.on('previousMessages', function(messages) {
+                for (message of messages) {
+                    renderMessage(message);
+                }
+            });
+
+            socket.on('receivedMessage', function(message) {
+                renderMessage(message);
+            });
+
+            $('#newBook').submit(function(event) {
+                event.preventDefault();
+                var user = $('input[name=username]').val();
+                var message = $('input[name=message]').val();
+                var author = $('input[name=autor]').val();
+                var gender = $('select[name=gender]').val();
+                if (user && message) {
+                    var messageObject = {
+                        user: user,
+                        message: message,
+                        author: author,
+                        gender: gender,
+                    };
+                    renderMessage(messageObject);
+                    socket.emit('sendMessage', messageObject);
+                }
+            })
+        </script>
+    </section>
+    </div>
+    <footer>
+        <br>
+        <p>&copy; Biblioteca Solidária</p>
+    </footer>
+</body>
+
+</html>
